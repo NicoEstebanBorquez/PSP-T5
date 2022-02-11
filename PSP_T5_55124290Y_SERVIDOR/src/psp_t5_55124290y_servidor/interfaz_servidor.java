@@ -6,17 +6,25 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+//import psp_t5_55124290y_servidor.Validacion;
 
 public class interfaz_servidor extends javax.swing.JFrame {
 
     servidor socketServidor;
 
     public interfaz_servidor() {
+
+        //Asociar fichero "serverKey.jks" al KeyStore
+        System.setProperty("javax.net.ssl.keyStore", "serverKey.jks");
+        //Contraseña
+        System.setProperty("javax.net.ssl.keyStorePassword", "claveSecreta");
+
         initComponents();
-        this.setTitle("Almacén de chirimoyas - Programa SERVIDOR");
+        this.setTitle("Almacén de ordenadores - Programa SERVIDOR");
         this.setLocationRelativeTo(this);
         this.setResizable(false);
-        this.setSize(590, 465);
+        this.setSize(595, 560);
+        this.setDefaultCloseOperation(interfaz_servidor.EXIT_ON_CLOSE);
 
     }
 
@@ -27,16 +35,23 @@ public class interfaz_servidor extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaConsola = new javax.swing.JTextArea();
         txtMensaje = new javax.swing.JTextField();
-        btnEnviar = new javax.swing.JButton();
+        btnIniciarSesion = new javax.swing.JButton();
         btnArrancarServidor = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtStockInicial = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         cbPuerto = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtContraseña = new javax.swing.JTextField();
+        txtStockInicial = new javax.swing.JTextField();
+        btnEnviar = new javax.swing.JButton();
+        btnCrearUsuario = new javax.swing.JButton();
         wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -50,55 +65,56 @@ public class interfaz_servidor extends javax.swing.JFrame {
         txtAreaConsola.setRows(5);
         jScrollPane1.setViewportView(txtAreaConsola);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 385, 285));
-        getContentPane().add(txtMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 385, 33));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 385, 285));
+        getContentPane().add(txtMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, 385, 33));
 
-        btnEnviar.setBackground(new java.awt.Color(255, 255, 255));
-        btnEnviar.setForeground(new java.awt.Color(29, 33, 123));
-        btnEnviar.setText("Enviar");
-        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+        btnIniciarSesion.setBackground(new java.awt.Color(29, 33, 123));
+        btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnIniciarSesion.setText("Iniciar sesión");
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnviarActionPerformed(evt);
+                btnIniciarSesionActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 380, 90, 33));
+        getContentPane().add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 110, -1));
 
         btnArrancarServidor.setBackground(new java.awt.Color(51, 153, 0));
         btnArrancarServidor.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
         btnArrancarServidor.setForeground(new java.awt.Color(255, 255, 255));
         btnArrancarServidor.setText("Iniciar servidor");
+        btnArrancarServidor.setEnabled(false);
         btnArrancarServidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnArrancarServidorActionPerformed(evt);
             }
         });
-        getContentPane().add(btnArrancarServidor, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, 140, 50));
+        getContentPane().add(btnArrancarServidor, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 140, 50));
 
         jLabel1.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(29, 33, 123));
-        jLabel1.setText("Puerto:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(455, 160, -1, -1));
+        jLabel1.setText("Contraseña:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(29, 33, 123));
         jLabel2.setText("Stock inicial:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 195, -1, -1));
-        getContentPane().add(txtStockInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 195, 60, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 210, -1, -1));
+        getContentPane().add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 100, -1));
 
         jLabel3.setFont(new java.awt.Font("Gadugi", 1, 30)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(29, 33, 123));
-        jLabel3.setText("Almacén de chirimoyas - SERVIDOR");
+        jLabel3.setText("Almacén de ordenadores - SERVIDOR");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 15, -1, -1));
 
         cbPuerto.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         cbPuerto.setForeground(new java.awt.Color(29, 33, 123));
         cbPuerto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "8899", "8098", "9090" }));
-        getContentPane().add(cbPuerto, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, -1, -1));
+        getContentPane().add(cbPuerto, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 175, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(29, 33, 123));
         jLabel7.setText("Consultar stock:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 275, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
@@ -109,24 +125,76 @@ public class interfaz_servidor extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 270, 40, 33));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 285, 40, 33));
 
         jLabel4.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(29, 33, 123));
-        jLabel4.setText("Operaciones:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 240, -1, -1));
+        jLabel4.setText("Iniciar sesión:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(29, 33, 123));
+        jLabel5.setText("Puerto:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(455, 175, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(29, 33, 123));
+        jLabel6.setText("Usuario:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(29, 33, 123));
+        jLabel8.setText("Operaciones:");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 255, -1, -1));
+        getContentPane().add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 100, -1));
+        getContentPane().add(txtStockInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 210, 60, -1));
+
+        btnEnviar.setBackground(new java.awt.Color(255, 255, 255));
+        btnEnviar.setForeground(new java.awt.Color(29, 33, 123));
+        btnEnviar.setText("Enviar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 470, 90, 33));
+
+        btnCrearUsuario.setBackground(new java.awt.Color(255, 255, 255));
+        btnCrearUsuario.setForeground(new java.awt.Color(29, 33, 123));
+        btnCrearUsuario.setText("Crear usuario");
+        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearUsuarioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 110, -1));
 
         wallpaper.setBackground(new java.awt.Color(153, 255, 51));
         wallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Wallpaper.png"))); // NOI18N
         wallpaper.setText("jLabel3");
-        getContentPane().add(wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 430));
+        getContentPane().add(wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        socketServidor.enviar(this.txtMensaje.getText());
-    }//GEN-LAST:event_btnEnviarActionPerformed
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+
+        Validacion validacion = new Validacion();
+        String usuario = this.txtUsuario.getText().trim();
+        String contraseña = this.txtContraseña.getText().trim();
+        int permitirAcceso = validacion.iniciarSesion(usuario, contraseña);
+
+        if (permitirAcceso > 0) {
+            this.btnArrancarServidor.setEnabled(true);
+            txtAreaConsola.append("Se ha iniciado sesión correctamente." + System.lineSeparator());
+        } else {
+            txtAreaConsola.append("Nombre de usuario o contraseña incorrectos." + System.lineSeparator());
+        }
+
+        this.txtUsuario.setText("");
+        this.txtContraseña.setText("");
+
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnArrancarServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArrancarServidorActionPerformed
         String puerto = "";
@@ -161,6 +229,15 @@ public class interfaz_servidor extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Stock disponible: " + stock);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        socketServidor.enviar(this.txtMensaje.getText());
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
+    private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
+
+
+    }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -168,7 +245,7 @@ public class interfaz_servidor extends javax.swing.JFrame {
 
         System.out.println(
                 "***************************************\n"
-                + "* PSP - Tarea Individual 5 - Servidor *\n"
+                + "* PSP - Tarea Individual 5 - Almacén multiusuario *\n"
                 + "***************************************\n"
                 + "*  Nicolás Esteban Bórquez  *\n"
                 + "***************************************\n"
@@ -210,18 +287,25 @@ public class interfaz_servidor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnArrancarServidor;
+    private javax.swing.JButton btnCrearUsuario;
     private javax.swing.JButton btnEnviar;
+    private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JComboBox<String> cbPuerto;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtAreaConsola;
+    private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtMensaje;
     private javax.swing.JTextField txtStockInicial;
+    private javax.swing.JTextField txtUsuario;
     private javax.swing.JLabel wallpaper;
     // End of variables declaration//GEN-END:variables
 }

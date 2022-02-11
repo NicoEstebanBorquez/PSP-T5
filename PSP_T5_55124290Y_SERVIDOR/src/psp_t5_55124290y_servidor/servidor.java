@@ -6,16 +6,17 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import javax.swing.JTextArea;
+import javax.net.ssl.*;
 
 /**
- * Esta clase se encarga de la creacion del hilo Servidor y del control del Stock de chirimoyas.
+ * Esta clase se encarga de la creacion del hilo Servidor y del control del Stock de ordenadores.
  *
  * @author Nicolás Esteban 55124290Y
  */
 public class servidor extends Thread {
 
-    private ServerSocket socketServidor;
-    private Socket socketCliente;
+    private SSLServerSocket socketServidor;
+    private SSLSocket socketCliente;
     private int puerto;
     private JTextArea consola;
     private BufferedReader recibir;
@@ -24,6 +25,7 @@ public class servidor extends Thread {
 
     /**
      * Constructor de la clase.
+     *
      * @param consola Objeto tipo JTextArea donde se imprimirán los mensajes.
      * @param puerto Puerto al que se realizará la conexión.
      * @param stockInicial Stock con el que se inicia el programa.
@@ -33,7 +35,10 @@ public class servidor extends Thread {
         this.puerto = puerto;
         this.stock = stockInicial;
         try {
-            socketServidor = new ServerSocket(puerto);
+            //SSLServerSocketFactory utilizado para crear el SSLServerSocket
+            SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+            //Inicialización del SSLServerSocket
+            socketServidor = (SSLServerSocket)factory.createServerSocket(puerto);
             consola.append("El servidor se ha iniciado correctamente en el puerto " + puerto + System.lineSeparator());
         } catch (Exception e) {
             consola.append("Error al iniciar el servidor." + System.lineSeparator() + e.getMessage()
@@ -46,7 +51,7 @@ public class servidor extends Thread {
      */
     public void run() {
         try {
-            socketCliente = socketServidor.accept();
+            socketCliente = (SSLSocket)socketServidor.accept();
             consola.append("Conexión realizada con el cliente" + System.lineSeparator());
             consola.append(socketCliente.toString() + System.lineSeparator());
 
@@ -84,14 +89,14 @@ public class servidor extends Thread {
     }
 
     /**
-     * Método que disminuye el stock en -1 chirimoya.
+     * Método que disminuye el stock en -1 ordenador.
      */
     private void reducirStock() {
         this.stock = stock - 1;
     }
 
     /**
-     * Método que aumenta el stock en 1 chirimoya.
+     * Método que aumenta el stock en 1 ordenador.
      */
     private void aumentarStock() {
         this.stock = stock + 1;

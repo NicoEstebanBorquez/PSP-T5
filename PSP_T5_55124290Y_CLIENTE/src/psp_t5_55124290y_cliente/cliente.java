@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.net.ssl.*;
 
 /**
  * Esta clase se encarga de la creacion del hilo Cliente.
@@ -14,16 +15,16 @@ import javax.swing.JTextArea;
  */
 public class cliente extends Thread {
 
-    private Socket socketCliente;
+    private SSLSocket socketCliente;
     private String server;
     private int puerto;
     private JTextArea consola;
     private BufferedReader recibir;
     private PrintWriter enviar;
 
-    
     /**
      * Constructor de la clase.
+     *
      * @param consola Objeto tipo JTextArea donde se imprimirán los mensajes.
      * @param server Server con el que se realizará la conexión.
      * @param puerto Puerto al que se realizará la conexión.
@@ -34,7 +35,10 @@ public class cliente extends Thread {
         this.puerto = puerto;
 
         try {
-            socketCliente = new Socket(server, puerto);
+            //SSLSocketFactory utilizado para crear el SSLSocket
+            SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+            //Inicialización del SSLSocket
+            socketCliente = (SSLSocket) factory.createSocket(server, puerto);
             consola.append("Conexión establecida con el servidor desde el puerto " + puerto
                     + System.lineSeparator());
         } catch (Exception e) {
@@ -53,7 +57,7 @@ public class cliente extends Thread {
         enviar.flush();
     }
 
-      /**
+    /**
      * Método que inicia el hilo Cliente.
      */
     public void run() {

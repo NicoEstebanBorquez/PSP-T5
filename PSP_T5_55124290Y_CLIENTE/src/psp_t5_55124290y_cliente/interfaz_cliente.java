@@ -7,11 +7,16 @@ public class interfaz_cliente extends javax.swing.JFrame {
     cliente socketCliente;
 
     public interfaz_cliente() {
+        //Asociar fichero "clientTrustedCerts.jks" al KeyStore
+        System.setProperty("javax.net.ssl.trustStore", "clientTrustedCerts.jks");
+        //Contraseña
+        System.setProperty("javax.net.ssl.trustStorePassword", "claveClienteSecreta");
+
         initComponents();
-        this.setTitle("Almacén de chirimoyas - Programa CLIENTE");
+        this.setTitle("Almacén de ordenadores - Programa CLIENTE");
         this.setLocationRelativeTo(this);
         this.setResizable(false);
-        this.setSize(630,480);
+        this.setSize(635, 480);
     }
 
     /**
@@ -118,7 +123,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Gadugi", 1, 30)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(29, 33, 123));
-        jLabel3.setText("Almacén de chirimoyas - CLIENTE");
+        jLabel3.setText("Almacén de ordenadores - CLIENTE");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 15, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
@@ -175,7 +180,6 @@ public class interfaz_cliente extends javax.swing.JFrame {
                 break;
         }
 
-        
         String puerto = "";
         int comboPuerto = cbPuerto.getSelectedIndex();
 
@@ -208,12 +212,12 @@ public class interfaz_cliente extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         socketCliente.enviar("+1");
-        txtAreaConsola.append("Ha añadido 1 chirimoya al stock." + System.lineSeparator());
+        txtAreaConsola.append("Ha añadido 1 ordenador al stock." + System.lineSeparator());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         socketCliente.enviar("-1");
-        txtAreaConsola.append("Ha eliminado 1 chirimoya del stock." + System.lineSeparator());
+        txtAreaConsola.append("Ha eliminado 1 ordenador del stock." + System.lineSeparator());
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -224,10 +228,10 @@ public class interfaz_cliente extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-         System.out.println(
-                  "***************************************\n"
-                + "* PSP - Tarea Individual 5 - Cliente *\n"
+
+        System.out.println(
+                "***************************************\n"
+                + "* PSP - Tarea Individual 5 - Almacén multiusuario *\n"
                 + "***************************************\n"
                 + "*  Nicolás Esteban Bórquez  *\n"
                 + "***************************************\n"
