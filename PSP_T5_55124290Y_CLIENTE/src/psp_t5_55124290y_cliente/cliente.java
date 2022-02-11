@@ -21,6 +21,7 @@ public class cliente extends Thread {
     private JTextArea consola;
     private BufferedReader recibir;
     private PrintWriter enviar;
+    Validacion validar = new Validacion();
 
     /**
      * Constructor de la clase.
@@ -53,7 +54,8 @@ public class cliente extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        enviar.println(mensaje);
+        String mensajeEncriptado = validar.encriptarSha256(mensaje);
+        enviar.println(mensajeEncriptado);
         enviar.flush();
     }
 

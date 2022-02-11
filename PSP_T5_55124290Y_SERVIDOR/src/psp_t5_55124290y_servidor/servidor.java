@@ -22,6 +22,7 @@ public class servidor extends Thread {
     private BufferedReader recibir;
     private PrintWriter enviar;
     private int stock;
+    Validacion validar = new Validacion();
 
     /**
      * Constructor de la clase.
@@ -59,7 +60,8 @@ public class servidor extends Thread {
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
             while (true) {
                 String textoRecibido = recibir.readLine();
-                switch (textoRecibido) {
+                String textoRecibidoDesencriptado = validar.encriptarSha256(textoRecibido);
+                switch (textoRecibidoDesencriptado) {
                     case "CONSULTA DE STOCK":
                         this.enviar("Stock disponible: " + this.getStock());
                         break;
@@ -71,7 +73,8 @@ public class servidor extends Thread {
                         break;
                     default:
                 }
-                consola.append("Cliente: " + textoRecibido + System.lineSeparator());
+                consola.append("Cliente DES: " + textoRecibidoDesencriptado + System.lineSeparator());
+                consola.append("Cliente ENC: " + textoRecibido + System.lineSeparator());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -84,7 +87,8 @@ public class servidor extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        enviar.println(mensaje);
+        String mensajeEncriptado = validar.encriptarSha256(mensaje);
+        enviar.println(mensajeEncriptado);
         enviar.flush();
     }
 

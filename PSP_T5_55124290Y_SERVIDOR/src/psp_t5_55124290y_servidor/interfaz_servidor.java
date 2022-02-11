@@ -160,8 +160,9 @@ public class interfaz_servidor extends javax.swing.JFrame {
         getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 470, 90, 33));
 
         btnCrearUsuario.setBackground(new java.awt.Color(255, 255, 255));
-        btnCrearUsuario.setForeground(new java.awt.Color(29, 33, 123));
+        btnCrearUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnCrearUsuario.setText("Crear usuario");
+        btnCrearUsuario.setEnabled(false);
         btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearUsuarioActionPerformed(evt);
@@ -182,15 +183,21 @@ public class interfaz_servidor extends javax.swing.JFrame {
         Validacion validacion = new Validacion();
         String usuario = this.txtUsuario.getText().trim();
         String contraseña = this.txtContraseña.getText().trim();
-        int permitirAcceso = validacion.iniciarSesion(usuario, contraseña);
+        if (!usuario.equals("") && !contraseña.equals("")) {
 
-        if (permitirAcceso > 0) {
-            this.btnArrancarServidor.setEnabled(true);
-            txtAreaConsola.append("Se ha iniciado sesión correctamente." + System.lineSeparator());
+            int permitirAcceso = validacion.iniciarSesion(usuario, contraseña);
+
+            if (permitirAcceso > 0) {
+                this.btnArrancarServidor.setEnabled(true);
+                this.btnCrearUsuario.setEnabled(true);
+                    btnCrearUsuario.setForeground(new java.awt.Color(29, 33, 123));
+                txtAreaConsola.append("Se ha iniciado sesión correctamente." + System.lineSeparator());
+            } else {
+                txtAreaConsola.append("Nombre de usuario o contraseña incorrectos." + System.lineSeparator());
+            }
         } else {
-            txtAreaConsola.append("Nombre de usuario o contraseña incorrectos." + System.lineSeparator());
+            txtAreaConsola.append("Debe introducir un Usuario y Contraseña." + System.lineSeparator());
         }
-
         this.txtUsuario.setText("");
         this.txtContraseña.setText("");
 
@@ -231,11 +238,29 @@ public class interfaz_servidor extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         socketServidor.enviar(this.txtMensaje.getText());
+        this.txtMensaje.setText("");
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
 
+        Validacion validacion = new Validacion();
+        String usuario = this.txtUsuario.getText().trim();
+        String contraseña = this.txtContraseña.getText().trim();
 
+        if (!usuario.equals("") && !contraseña.equals("")) {
+            int usuarioCreado = validacion.crearUsuario(usuario, contraseña);
+
+            if (usuarioCreado > 0) {
+                txtAreaConsola.append("Usuario creado correctamente." + System.lineSeparator());
+            } else {
+                txtAreaConsola.append("Error al crear el usuario." + System.lineSeparator());
+            }
+        } else {
+            txtAreaConsola.append("Debe introducir un Usuario y Contraseña." + System.lineSeparator());
+        }
+
+        this.txtUsuario.setText("");
+        this.txtContraseña.setText("");
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
     /**

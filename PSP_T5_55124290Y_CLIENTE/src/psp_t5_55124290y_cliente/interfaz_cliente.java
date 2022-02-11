@@ -208,6 +208,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         socketCliente.enviar(this.txtMensaje.getText());
+        this.txtMensaje.setText("");
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
