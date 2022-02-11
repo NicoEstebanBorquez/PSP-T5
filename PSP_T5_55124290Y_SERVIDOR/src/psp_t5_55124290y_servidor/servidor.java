@@ -39,7 +39,7 @@ public class servidor extends Thread {
             //SSLServerSocketFactory utilizado para crear el SSLServerSocket
             SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
             //Inicialización del SSLServerSocket
-            socketServidor = (SSLServerSocket)factory.createServerSocket(puerto);
+            socketServidor = (SSLServerSocket) factory.createServerSocket(puerto);
             consola.append("El servidor se ha iniciado correctamente en el puerto " + puerto + System.lineSeparator());
         } catch (Exception e) {
             consola.append("Error al iniciar el servidor." + System.lineSeparator() + e.getMessage()
@@ -52,7 +52,7 @@ public class servidor extends Thread {
      */
     public void run() {
         try {
-            socketCliente = (SSLSocket)socketServidor.accept();
+            socketCliente = (SSLSocket) socketServidor.accept();
             consola.append("Conexión realizada con el cliente" + System.lineSeparator());
             consola.append(socketCliente.toString() + System.lineSeparator());
 
@@ -60,21 +60,23 @@ public class servidor extends Thread {
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
             while (true) {
                 String textoRecibido = recibir.readLine();
-                String textoRecibidoDesencriptado = validar.encriptarSha256(textoRecibido);
-                switch (textoRecibidoDesencriptado) {
-                    case "CONSULTA DE STOCK":
+
+                String consultaStock = "";
+                switch (textoRecibido) {
+                    case "345685c267e166c57551ffe6c73fbc77114bf6c56370d7286ead86b0a711f2"://CONSULTA DE STOCK
                         this.enviar("Stock disponible: " + this.getStock());
                         break;
-                    case "+1":
+                    case "c59dc4e44ff99288156d4dff2168f6ac7ddee6b1fc7ccc754656ffaa6d351ea": //+1
                         this.aumentarStock();
+                        consola.append("Cliente ha añadido 1 ordenador al stock." + System.lineSeparator());
                         break;
-                    case "-1":
+                    case "1bad6b8cf97131fceab8543e81f7757195fbb1d36b376ee994ad1cf17699c464"://-1
                         this.reducirStock();
+                        consola.append("Cliente ha eliminado 1 ordenador del stock." + System.lineSeparator());
                         break;
                     default:
                 }
-                consola.append("Cliente DES: " + textoRecibidoDesencriptado + System.lineSeparator());
-                consola.append("Cliente ENC: " + textoRecibido + System.lineSeparator());
+               // consola.append("Cliente: " + textoRecibido + System.lineSeparator());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -87,8 +89,8 @@ public class servidor extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        String mensajeEncriptado = validar.encriptarSha256(mensaje);
-        enviar.println(mensajeEncriptado);
+        //String mensajeEncriptado = validar.encriptarSha256(mensaje);
+        enviar.println(mensaje);
         enviar.flush();
     }
 

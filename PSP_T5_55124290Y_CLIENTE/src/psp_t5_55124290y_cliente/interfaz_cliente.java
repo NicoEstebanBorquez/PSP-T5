@@ -16,7 +16,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
         this.setTitle("Almacén de ordenadores - Programa CLIENTE");
         this.setLocationRelativeTo(this);
         this.setResizable(false);
-        this.setSize(635, 480);
+        this.setSize(635, 440);
     }
 
     /**
@@ -28,8 +28,6 @@ public class interfaz_cliente extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaConsola = new javax.swing.JTextArea();
-        txtMensaje = new javax.swing.JTextField();
-        btnEnviar = new javax.swing.JButton();
         btnConectarConServidor = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -54,18 +52,6 @@ public class interfaz_cliente extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtAreaConsola);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 385, 305));
-        getContentPane().add(txtMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 400, 385, 33));
-
-        btnEnviar.setBackground(new java.awt.Color(255, 255, 255));
-        btnEnviar.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        btnEnviar.setForeground(new java.awt.Color(29, 33, 123));
-        btnEnviar.setText("Enviar");
-        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnviarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, 90, 33));
 
         btnConectarConServidor.setBackground(new java.awt.Color(51, 153, 0));
         btnConectarConServidor.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
@@ -87,7 +73,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 270, 50, 33));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 285, 50, 33));
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
@@ -98,7 +84,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 305, 50, 33));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 320, 50, 33));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
@@ -109,7 +95,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 340, 50, 33));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 355, 50, 33));
 
         jLabel1.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(29, 33, 123));
@@ -129,22 +115,22 @@ public class interfaz_cliente extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(29, 33, 123));
         jLabel4.setText("Operaciones:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 240, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 255, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(29, 33, 123));
         jLabel5.setText("Añadir:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 310, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 330, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(29, 33, 123));
         jLabel6.setText("Eliminar:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(487, 345, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(487, 360, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(29, 33, 123));
         jLabel7.setText("Consultar stock:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 275, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 290, -1, -1));
 
         cbPuerto.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         cbPuerto.setForeground(new java.awt.Color(29, 33, 123));
@@ -205,11 +191,6 @@ public class interfaz_cliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe indicar un una IP y un PUERTO para realizar la conexión.", null, JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConectarConServidorActionPerformed
-
-    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        socketCliente.enviar(this.txtMensaje.getText());
-        this.txtMensaje.setText("");
-    }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         socketCliente.enviar("+1");
@@ -272,7 +253,6 @@ public class interfaz_cliente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectarConServidor;
-    private javax.swing.JButton btnEnviar;
     private javax.swing.JComboBox<String> cbIp;
     private javax.swing.JComboBox<String> cbPuerto;
     private javax.swing.JButton jButton1;
@@ -287,7 +267,6 @@ public class interfaz_cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtAreaConsola;
-    private javax.swing.JTextField txtMensaje;
     private javax.swing.JLabel wallpaper;
     // End of variables declaration//GEN-END:variables
 }
