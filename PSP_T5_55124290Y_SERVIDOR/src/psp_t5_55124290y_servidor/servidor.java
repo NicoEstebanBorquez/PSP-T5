@@ -3,8 +3,6 @@ package psp_t5_55124290y_servidor;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 import javax.swing.JTextArea;
 import javax.net.ssl.*;
 
@@ -59,12 +57,11 @@ public class servidor extends Thread {
             recibir = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
             while (true) {
-                String textoRecibido = recibir.readLine();
+                String textoRecibidoEncriptado = recibir.readLine();
 
-                String consultaStock = "";
-                switch (textoRecibido) {
+                switch (textoRecibidoEncriptado) {
                     case "345685c267e166c57551ffe6c73fbc77114bf6c56370d7286ead86b0a711f2"://CONSULTA DE STOCK
-                        this.enviar("Stock disponible: " + this.getStock());
+                        this.enviar("Stock disponible: ");//+ this.getStock()
                         break;
                     case "c59dc4e44ff99288156d4dff2168f6ac7ddee6b1fc7ccc754656ffaa6d351ea": //+1
                         this.aumentarStock();
@@ -76,7 +73,6 @@ public class servidor extends Thread {
                         break;
                     default:
                 }
-               // consola.append("Cliente: " + textoRecibido + System.lineSeparator());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -89,9 +85,12 @@ public class servidor extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        //String mensajeEncriptado = validar.encriptarSha256(mensaje);
-        enviar.println(mensaje);
+        String mensajeEncriptado = validar.encriptarSha256(mensaje);
+        enviar.println(mensajeEncriptado + this.getStock());
         enviar.flush();
+        
+        //Muestra por consola:
+        System.out.println("Mensaje encriptado enviado por Servidor: " + mensajeEncriptado + this.getStock());
     }
 
     /**

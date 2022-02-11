@@ -3,7 +3,6 @@ package psp_t5_55124290y_cliente;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.net.ssl.*;
@@ -57,6 +56,9 @@ public class cliente extends Thread {
         String mensajeEncriptado = validar.encriptarSha256(mensaje);
         enviar.println(mensajeEncriptado);
         enviar.flush();
+
+        //Muestra por consola:
+        System.out.println("Mensaje encriptado enviado por Cliente: " + mensajeEncriptado);
     }
 
     /**
@@ -68,18 +70,19 @@ public class cliente extends Thread {
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
 
             while (true) {
-                String textoRecibido = recibir.readLine();
+                String textoRecibidoEncriptado = recibir.readLine();
+                String porcionEncriptada = textoRecibidoEncriptado.substring(1, 62);
+                String porcionNoEncriptada = textoRecibidoEncriptado.substring(62);
 
-                if (textoRecibido.contains("Stock")) {
-                    consola.append(textoRecibido + System.lineSeparator());
-                    JOptionPane.showMessageDialog(null, textoRecibido);
+                if (textoRecibidoEncriptado.contains(porcionEncriptada)) {
+                    consola.append("Stock disponible: " + porcionNoEncriptada + System.lineSeparator());
+                    JOptionPane.showMessageDialog(null, "Stock disponible: " + porcionNoEncriptada);
                 } else {
-                    consola.append("Servidor: " + textoRecibido + System.lineSeparator());
+                    consola.append("Servidor: " + textoRecibidoEncriptado + System.lineSeparator());
                 }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
 }

@@ -6,7 +6,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-//import psp_t5_55124290y_servidor.Validacion;
 
 public class interfaz_servidor extends javax.swing.JFrame {
 
@@ -25,7 +24,6 @@ public class interfaz_servidor extends javax.swing.JFrame {
         this.setResizable(false);
         this.setSize(595, 520);
         this.setDefaultCloseOperation(interfaz_servidor.EXIT_ON_CLOSE);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -211,8 +209,6 @@ public class interfaz_servidor extends javax.swing.JFrame {
         if (!stockInicial.equals("")) {
             socketServidor = new servidor(this.txtAreaConsola, Integer.parseInt(puerto), Integer.parseInt(stockInicial));
             socketServidor.start();
-
-            //socketServidor.setStock(Integer.parseInt(stockInicial));
         } else {
             JOptionPane.showMessageDialog(this, "Debe indicar un STOCK INICAL para iniciar el servidor.", null, JOptionPane.ERROR_MESSAGE);
         }
