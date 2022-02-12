@@ -62,11 +62,34 @@ public class cliente extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        enviar.println(mensaje);
+        String mensajeEncriptado = "";
+        //ENCRIPTACION:
+        try {
+            //Instancia de la clase "EncriptacionAsimetrica"
+            EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
+
+            //Se obtiene la clave Privada
+            PrivateKey clavePrivada = encriptacion.obtenerClavePrivada("Claves/clavePrivada");
+
+            //Se encripta el mensaje a enviar utilizando la clave Privada
+            mensajeEncriptado = encriptacion.encriptarTexto(mensaje, clavePrivada);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchProviderException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        enviar.println(mensajeEncriptado);
         enviar.flush();
 
         //Muestra por consola:
-        System.out.println("Mensaje enviado por Cliente: " + mensaje);
+        System.out.println("Mensaje encriptado enviado a Servidor: " + mensajeEncriptado);
     }
 
     /**
@@ -79,19 +102,17 @@ public class cliente extends Thread {
 
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
 
+            //Instancia de la clase "EncriptacionAsimetrica"
             EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
-            //PrivateKey clavePrivada = encriptacion.obtenerClavePrivada("Claves/clavePrivada");
+
+            //Se obtiene la clave Pública
             PublicKey clavePublica = encriptacion.obtenerClavePublica("Claves/clavePublica");
 
-            /*
-            String mensajeDescifrado = asimetrica.desencriptarTexto(mensajeCifrado, clavePublica);
-            System.out.println("Mensaje original: " + mensaje);
-            System.out.println("Mensaje cifrado: " + mensajeCifrado);
-            System.out.println("Mensaje descifrado: " + mensajeDescifrado);
-             */
             while (true) {
                 String textoEncriptadoRecibido = recibir.readLine();
                 System.out.println("1.Mensaje recibido del servidor [encriptado]: " + textoEncriptadoRecibido);
+
+                //Se desencripta el mensaje recibido utilizando la clave Pública
                 String textoDesencriptado = encriptacion.desencriptarTexto(textoEncriptadoRecibido, clavePublica);
                 System.out.println("2.Mensaje recibido del servidor [desencriptado]" + textoDesencriptado);
 
@@ -102,21 +123,6 @@ public class cliente extends Thread {
                     consola.append("Servidor: " + textoDesencriptado + System.lineSeparator());
                 }
             }
-            /*while (true) {
-                String textoEncriptadoRecibido = recibir.readLine();
-
-                String textoDesencriptado = encriptacion.desencriptarTexto(textoEncriptadoRecibido, clavePublica);
-                //String textoDesencriptado = "123456789";
-                System.out.println("1.Mensaje recibido del servidor [encriptado]: " + textoEncriptadoRecibido);
-                System.out.println("2.Mensaje recibido del servidor [desencriptado]" + textoDesencriptado);
-
-                if (textoDesencriptado.contains("Stock disponible")) {
-                    consola.append(textoDesencriptado + System.lineSeparator());
-                    JOptionPane.showMessageDialog(null, textoDesencriptado);
-                } else {
-                    consola.append("Servidor: " + textoDesencriptado + System.lineSeparator());
-                }
-            }*/
         } catch (IOException ex) {
             Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {

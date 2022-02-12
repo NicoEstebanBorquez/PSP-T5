@@ -7,7 +7,6 @@ import javax.swing.JTextArea;
 import javax.net.ssl.*;
 import encriptacion.*;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -62,21 +61,35 @@ public class servidor extends Thread {
      * Método que inicia el hilo Servidor.
      */
     public void run() {
+
         try {
             socketCliente = (SSLSocket) socketServidor.accept();
+
             consola.append("Conexión realizada con el cliente" + System.lineSeparator());
             consola.append(socketCliente.toString() + System.lineSeparator());
 
             recibir = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
-            while (true) {
-                String textoRecibido = recibir.readLine();
 
-                switch (textoRecibido) {
+            //Instancia de la clase "EncriptacionAsimetrica"
+            EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
+
+            //Se obtiene la clave Pública
+            PublicKey clavePublica = encriptacion.obtenerClavePublica("Claves/clavePublica");
+
+            while (true) {
+                String textoEncriptadoRecibido = recibir.readLine();
+                System.out.println("1.Mensaje recibido del cliente [encriptado]: " + textoEncriptadoRecibido);
+
+                //Se desencripta el mensaje recibido utilizando la clave Pública
+                String textoDesencriptado = encriptacion.desencriptarTexto(textoEncriptadoRecibido, clavePublica);
+                System.out.println("2.Mensaje recibido del cliente [desencriptado]" + textoDesencriptado);
+
+                switch (textoDesencriptado) {
                     case "CONSULTA DE STOCK":
                         this.enviar("Stock disponible: " + this.getStock());
                         break;
-                    case "+1": 
+                    case "+1":
                         this.aumentarStock();
                         consola.append("Cliente ha añadido 1 ordenador al stock." + System.lineSeparator());
                         break;
@@ -86,11 +99,20 @@ public class servidor extends Thread {
                         break;
                     default:
                 }
-                
+
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchProviderException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /**
@@ -100,13 +122,16 @@ public class servidor extends Thread {
      */
     public void enviar(String mensaje) {
         String mensajeEncriptado = "";
-        try { 
+        //ENCRIPTACION:
+        try {
+            //Instancia de la clase "EncriptacionAsimetrica"
             EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
+
+            //Se obtiene la clave Privada
             PrivateKey clavePrivada = encriptacion.obtenerClavePrivada("Claves/clavePrivada");
+
+            //Se encripta el mensaje a enviar utilizando la clave Privada
             mensajeEncriptado = encriptacion.encriptarTexto(mensaje, clavePrivada);
-            //System.out.println("1.Servidor envía {sin cifrar}:: " + mensaje);
-            //System.out.println("2.Servidor envia [cifrado]: " + mensajeEncriptado);
-            
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchPaddingException ex) {
@@ -124,12 +149,12 @@ public class servidor extends Thread {
         } catch (Exception ex) {
             Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        enviar.println(mensajeEncriptado);//mensaje
+
+        enviar.println(mensajeEncriptado);
         enviar.flush();
-        
+
         //Muestra por consola:
-        System.out.println("Mensaje encriptado enviado por Servidor: " + mensajeEncriptado);
+        System.out.println("Mensaje encriptado enviado a Cliente: " + mensajeEncriptado);
     }
 
     /**

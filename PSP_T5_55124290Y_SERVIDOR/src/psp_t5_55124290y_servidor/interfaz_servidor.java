@@ -27,13 +27,17 @@ public class interfaz_servidor extends javax.swing.JFrame {
         //Contraseña
         System.setProperty("javax.net.ssl.keyStorePassword", "claveSecreta");
 
-        //Generacion de claves privada y publica 
-     try {
-           EncriptacionAsimetrica asimetrica = new EncriptacionAsimetrica();
-           asimetrica.generarClaves();
-           // PrivateKey clavePrivada = asimetrica.obtenerClavePrivada("Claves/clavePrivada");
-            //PublicKey clavePublica = asimetrica.obtenerClavePublica("Claves/clavePublica");
-
+        
+        //Generación de claves privada y publica:
+        
+        /*Este código está comentado, ya que la generación de las claves sólo se realiza una vez.
+        Después de crear las clave Privada y la clave Pública se añade al proyecto Cliente el 
+        directorio "Claves", el cual contiene el par de claves que el Cliente también usara para 
+        encriptar los mensajes que enviará y desencriptar los mensajes recibidos.
+        
+        try {
+            EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
+            encriptacion.generarClaves();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchPaddingException ex) {
@@ -44,7 +48,7 @@ public class interfaz_servidor extends javax.swing.JFrame {
             Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 
         initComponents();
         this.setTitle("Almacén de ordenadores - Programa SERVIDOR");
@@ -237,6 +241,7 @@ public class interfaz_servidor extends javax.swing.JFrame {
         if (!stockInicial.equals("")) {
             socketServidor = new servidor(this.txtAreaConsola, Integer.parseInt(puerto), Integer.parseInt(stockInicial));
             socketServidor.start();
+            this.btnArrancarServidor.setEnabled(false);
         } else {
             JOptionPane.showMessageDialog(this, "Debe indicar un STOCK INICAL para iniciar el servidor.", null, JOptionPane.ERROR_MESSAGE);
         }

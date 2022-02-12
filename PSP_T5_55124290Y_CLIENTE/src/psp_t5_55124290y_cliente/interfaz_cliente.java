@@ -185,6 +185,7 @@ public class interfaz_cliente extends javax.swing.JFrame {
             try {
                 socketCliente = new cliente(this.txtAreaConsola, server, Integer.parseInt(puerto));
                 socketCliente.start();
+                this.btnConectarConServidor.setEnabled(false);
             } catch (Exception ex) {
             }
         } else {
