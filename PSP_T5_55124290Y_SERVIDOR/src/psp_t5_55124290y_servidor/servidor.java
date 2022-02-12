@@ -6,6 +6,18 @@ import java.io.PrintWriter;
 import javax.swing.JTextArea;
 import javax.net.ssl.*;
 import encriptacion.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * Esta clase se encarga de la creacion del hilo Servidor y del control del Stock de ordenadores.
@@ -87,11 +99,37 @@ public class servidor extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        enviar.println(mensaje);
+        String mensajeEncriptado = "";
+        try { 
+            EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
+            PrivateKey clavePrivada = encriptacion.obtenerClavePrivada("Claves/clavePrivada");
+            mensajeEncriptado = encriptacion.encriptarTexto(mensaje, clavePrivada);
+            //System.out.println("1.Servidor envía {sin cifrar}:: " + mensaje);
+            //System.out.println("2.Servidor envia [cifrado]: " + mensajeEncriptado);
+            
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchProviderException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        enviar.println(mensajeEncriptado);//mensaje
         enviar.flush();
         
         //Muestra por consola:
-        System.out.println("Mensaje enviado por Servidor: " + mensaje);
+        System.out.println("Mensaje encriptado enviado por Servidor: " + mensajeEncriptado);
     }
 
     /**

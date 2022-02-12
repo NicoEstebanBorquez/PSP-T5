@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package encriptacion;
 
 import java.io.File;
@@ -18,8 +23,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.codec.binary.Base64;
 
+/**
+ *
+ * @author Nico
+ */
 public class EncriptacionAsimetrica {
-
     private Cipher cipher;
 
     /**
@@ -28,14 +36,10 @@ public class EncriptacionAsimetrica {
     public EncriptacionAsimetrica() throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, IOException {
         this.cipher = Cipher.getInstance("RSA");
 
-    }
-
-    public void generarClaves() throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
-
-        GeneradorClaves generador = new GeneradorClaves(1024);
+        /*GeneradorClaves generador = new GeneradorClaves(1024);
         generador.generarClaves();
         generador.escribirFichero("Claves/clavePublica", generador.getClavePublica().getEncoded());
-        generador.escribirFichero("Claves/clavePrivada", generador.getClavePrivada().getEncoded());
+        generador.escribirFichero("Claves/clavePrivada", generador.getClavePrivada().getEncoded());*/
     }
 
     /**
@@ -83,5 +87,5 @@ public class EncriptacionAsimetrica {
         this.cipher.init(Cipher.DECRYPT_MODE, key);
         return new String(cipher.doFinal(Base64.decodeBase64(mensaje)), "UTF-8");
     }
-
+    
 }

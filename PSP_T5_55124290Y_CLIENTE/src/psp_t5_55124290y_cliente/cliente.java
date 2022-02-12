@@ -1,8 +1,17 @@
 package psp_t5_55124290y_cliente;
 
+import encriptacion.EncriptacionAsimetrica;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.net.ssl.*;
@@ -64,22 +73,61 @@ public class cliente extends Thread {
      * Método que inicia el hilo Cliente.
      */
     public void run() {
+
         try {
             recibir = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
+
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
 
+            EncriptacionAsimetrica encriptacion = new EncriptacionAsimetrica();
+            //PrivateKey clavePrivada = encriptacion.obtenerClavePrivada("Claves/clavePrivada");
+            PublicKey clavePublica = encriptacion.obtenerClavePublica("Claves/clavePublica");
+
+            /*
+            String mensajeDescifrado = asimetrica.desencriptarTexto(mensajeCifrado, clavePublica);
+            System.out.println("Mensaje original: " + mensaje);
+            System.out.println("Mensaje cifrado: " + mensajeCifrado);
+            System.out.println("Mensaje descifrado: " + mensajeDescifrado);
+             */
             while (true) {
-                String textoRecibido = recibir.readLine();
-               
-                if (textoRecibido.contains("Stock disponible")) {
-                    consola.append(textoRecibido + System.lineSeparator());
-                    JOptionPane.showMessageDialog(null, textoRecibido);
+                String textoEncriptadoRecibido = recibir.readLine();
+                System.out.println("1.Mensaje recibido del servidor [encriptado]: " + textoEncriptadoRecibido);
+                String textoDesencriptado = encriptacion.desencriptarTexto(textoEncriptadoRecibido, clavePublica);
+                System.out.println("2.Mensaje recibido del servidor [desencriptado]" + textoDesencriptado);
+
+                if (textoDesencriptado.contains("Stock disponible")) {
+                    consola.append(textoDesencriptado + System.lineSeparator());
+                    JOptionPane.showMessageDialog(null, textoDesencriptado);
                 } else {
-                    consola.append("Servidor: " + textoRecibido + System.lineSeparator());
+                    consola.append("Servidor: " + textoDesencriptado + System.lineSeparator());
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            /*while (true) {
+                String textoEncriptadoRecibido = recibir.readLine();
+
+                String textoDesencriptado = encriptacion.desencriptarTexto(textoEncriptadoRecibido, clavePublica);
+                //String textoDesencriptado = "123456789";
+                System.out.println("1.Mensaje recibido del servidor [encriptado]: " + textoEncriptadoRecibido);
+                System.out.println("2.Mensaje recibido del servidor [desencriptado]" + textoDesencriptado);
+
+                if (textoDesencriptado.contains("Stock disponible")) {
+                    consola.append(textoDesencriptado + System.lineSeparator());
+                    JOptionPane.showMessageDialog(null, textoDesencriptado);
+                } else {
+                    consola.append("Servidor: " + textoDesencriptado + System.lineSeparator());
+                }
+            }*/
+        } catch (IOException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchProviderException ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 }

@@ -1,7 +1,16 @@
 package psp_t5_55124290y_servidor;
 
+import encriptacion.*;
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -17,6 +26,25 @@ public class interfaz_servidor extends javax.swing.JFrame {
         System.setProperty("javax.net.ssl.keyStore", "serverKey.jks");
         //Contraseña
         System.setProperty("javax.net.ssl.keyStorePassword", "claveSecreta");
+
+        //Generacion de claves privada y publica 
+     try {
+           EncriptacionAsimetrica asimetrica = new EncriptacionAsimetrica();
+           asimetrica.generarClaves();
+           // PrivateKey clavePrivada = asimetrica.obtenerClavePrivada("Claves/clavePrivada");
+            //PublicKey clavePublica = asimetrica.obtenerClavePublica("Claves/clavePublica");
+
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchProviderException ex) {
+            Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(interfaz_servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         initComponents();
         this.setTitle("Almacén de ordenadores - Programa SERVIDOR");
@@ -175,7 +203,7 @@ public class interfaz_servidor extends javax.swing.JFrame {
             if (permitirAcceso > 0) {
                 this.btnArrancarServidor.setEnabled(true);
                 this.btnCrearUsuario.setEnabled(true);
-                    btnCrearUsuario.setForeground(new java.awt.Color(29, 33, 123));
+                btnCrearUsuario.setForeground(new java.awt.Color(29, 33, 123));
                 txtAreaConsola.append("Se ha iniciado sesión correctamente." + System.lineSeparator());
             } else {
                 txtAreaConsola.append("Nombre de usuario o contraseña incorrectos." + System.lineSeparator());
