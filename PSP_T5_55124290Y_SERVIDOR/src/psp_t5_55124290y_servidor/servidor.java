@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import javax.swing.JTextArea;
 import javax.net.ssl.*;
+import encriptacion.*;
 
 /**
  * Esta clase se encarga de la creacion del hilo Servidor y del control del Stock de ordenadores.
@@ -57,22 +58,23 @@ public class servidor extends Thread {
             recibir = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
             while (true) {
-                String textoRecibidoEncriptado = recibir.readLine();
+                String textoRecibido = recibir.readLine();
 
-                switch (textoRecibidoEncriptado) {
-                    case "345685c267e166c57551ffe6c73fbc77114bf6c56370d7286ead86b0a711f2"://CONSULTA DE STOCK
-                        this.enviar("Stock disponible: ");//+ this.getStock()
+                switch (textoRecibido) {
+                    case "CONSULTA DE STOCK":
+                        this.enviar("Stock disponible: " + this.getStock());
                         break;
-                    case "c59dc4e44ff99288156d4dff2168f6ac7ddee6b1fc7ccc754656ffaa6d351ea": //+1
+                    case "+1": 
                         this.aumentarStock();
                         consola.append("Cliente ha añadido 1 ordenador al stock." + System.lineSeparator());
                         break;
-                    case "1bad6b8cf97131fceab8543e81f7757195fbb1d36b376ee994ad1cf17699c464"://-1
+                    case "-1":
                         this.reducirStock();
                         consola.append("Cliente ha eliminado 1 ordenador del stock." + System.lineSeparator());
                         break;
                     default:
                 }
+                
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -85,12 +87,11 @@ public class servidor extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        String mensajeEncriptado = validar.encriptarSha256(mensaje);
-        enviar.println(mensajeEncriptado + this.getStock());
+        enviar.println(mensaje);
         enviar.flush();
         
         //Muestra por consola:
-        System.out.println("Mensaje encriptado enviado por Servidor: " + mensajeEncriptado + this.getStock());
+        System.out.println("Mensaje enviado por Servidor: " + mensaje);
     }
 
     /**

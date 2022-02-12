@@ -53,12 +53,11 @@ public class cliente extends Thread {
      * @param mensaje Mensaje que será enviado.
      */
     public void enviar(String mensaje) {
-        String mensajeEncriptado = validar.encriptarSha256(mensaje);
-        enviar.println(mensajeEncriptado);
+        enviar.println(mensaje);
         enviar.flush();
 
         //Muestra por consola:
-        System.out.println("Mensaje encriptado enviado por Cliente: " + mensajeEncriptado);
+        System.out.println("Mensaje enviado por Cliente: " + mensaje);
     }
 
     /**
@@ -70,15 +69,13 @@ public class cliente extends Thread {
             enviar = new PrintWriter(socketCliente.getOutputStream(), true);
 
             while (true) {
-                String textoRecibidoEncriptado = recibir.readLine();
-                String porcionEncriptada = textoRecibidoEncriptado.substring(1, 62);
-                String porcionNoEncriptada = textoRecibidoEncriptado.substring(62);
-
-                if (textoRecibidoEncriptado.contains(porcionEncriptada)) {
-                    consola.append("Stock disponible: " + porcionNoEncriptada + System.lineSeparator());
-                    JOptionPane.showMessageDialog(null, "Stock disponible: " + porcionNoEncriptada);
+                String textoRecibido = recibir.readLine();
+               
+                if (textoRecibido.contains("Stock disponible")) {
+                    consola.append(textoRecibido + System.lineSeparator());
+                    JOptionPane.showMessageDialog(null, textoRecibido);
                 } else {
-                    consola.append("Servidor: " + textoRecibidoEncriptado + System.lineSeparator());
+                    consola.append("Servidor: " + textoRecibido + System.lineSeparator());
                 }
             }
         } catch (Exception e) {
